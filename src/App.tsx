@@ -1,10 +1,14 @@
 import React, { Fragment } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "./App.css";
+import QuoteItem from "./components/quotes/QuoteItem/QuoteItem";
+import QuoteList from "./components/quotes/QuoteList/QuoteList";
+import AllQuotes from "./pages/AllQuotes";
+import NewQuote from "./pages/NewQuote";
+import QuoteDetail from "./pages/QuoteDetail";
 import MainHeader from "./practice/MainHeader/MainHeader";
-import ProductDetail from "./practice/Products/ProductDetail/ProductDetail";
-import Products from "./practice/Products/Products";
-import Welcome from "./practice/Welcome/Welcome";
+
+let quoteList = [{ id: "1", author: "test", text: "test" }];
 
 function App() {
     return (
@@ -13,16 +17,16 @@ function App() {
             <main>
                 <Switch>
                     <Route path={"/"} exact>
-                        <Redirect to={"/welcome"}></Redirect>
+                        <Redirect to={"/quotes"}></Redirect>
                     </Route>
-                    <Route path={"/welcome"}>
-                        <Welcome />
+                    <Route path={"/quotes"} exact>
+                        <AllQuotes />
                     </Route>
-                    <Route path={"/products"} exact>
-                        <Products />
+                    <Route path={"/quotes/:quoteId"}>
+                        <QuoteDetail />
                     </Route>
-                    <Route path={"/products/:productId"}>
-                        <ProductDetail />
+                    <Route path={"/new-quote"}>
+                        <NewQuote />
                     </Route>
                 </Switch>
             </main>

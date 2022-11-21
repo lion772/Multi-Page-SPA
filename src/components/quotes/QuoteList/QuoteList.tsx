@@ -3,7 +3,7 @@ import QuoteItem from "../QuoteItem/QuoteItem";
 import styles from "./QuoteList.module.css";
 
 interface QuoteListProps {
-    quotes: [{ id: string; author: string; text: string }];
+    quotes: Array<{ id: string; author: string; text: string }>;
 }
 
 const QuoteList: FC<QuoteListProps> = (props) => {
