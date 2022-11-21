@@ -1,19 +1,23 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./MainHeader.module.css";
 
 interface MainHeaderProps {}
 
 const MainHeader: FC<MainHeaderProps> = () => {
     return (
-        <header className={styles.MainHeader}>
+        <header className={styles.header}>
             <nav>
                 <ul>
                     <li>
-                        <Link to="/welcome">Welcome</Link>
+                        <NavLink activeClassName={styles.active} to="/welcome">
+                            Welcome
+                        </NavLink>
                     </li>
                     <li>
-                        <Link to="/products">Products</Link>
+                        <NavLink activeClassName={styles.active} to="/products">
+                            Products
+                        </NavLink>
                     </li>
                 </ul>
             </nav>
