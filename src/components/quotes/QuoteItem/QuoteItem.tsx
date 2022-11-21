@@ -1,12 +1,25 @@
-import React, { FC } from 'react';
-import styles from './QuoteItem.module.css';
+import React, { FC } from "react";
+import { Quote } from "../QuoteForm/QuoteForm";
+import styles from "./QuoteItem.module.css";
 
-interface QuoteItemProps {}
+interface IQuoteItem {
+    id: string;
+    author: string;
+    text: string;
+}
 
-const QuoteItem: FC<QuoteItemProps> = () => (
-  <div className={styles.QuoteItem}>
-    QuoteItem Component
-  </div>
-);
+const QuoteItem: FC<IQuoteItem> = (props) => {
+    return (
+        <li className={styles.item}>
+            <figure>
+                <blockquote>
+                    <p>{props.text}</p>
+                </blockquote>
+                <figcaption>{props.author}</figcaption>
+            </figure>
+            <a className="btn">View Fullscreen</a>
+        </li>
+    );
+};
 
 export default QuoteItem;
