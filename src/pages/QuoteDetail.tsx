@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Route, useParams } from "react-router-dom";
+import { Link, Route, useParams } from "react-router-dom";
 import Comments from "../components/comments/Comments/Comments";
 import HighlightedQuote from "../components/quotes/HighlightedQuote/HighlightedQuote";
 
@@ -25,11 +25,13 @@ const QuoteDetail: FC<IQuoteDetail> = () => {
 
     return (
         <>
-            <p>Your quote is: </p>
-            <h3>{quoteId}</h3>
-            {/* <Route path={`/quotes/${quoteId}/comments`}> */}
             <HighlightedQuote text={quote.text} author={quote.author} />
-            <Route path={"/quotes/:quoteId/comments"}>
+            <Route path={`/quotes/${quote.id}`} exact>
+                <Link className="btn--flat" to={`/quotes/${quote.id}/comments`}>
+                    Load comments
+                </Link>
+            </Route>
+            <Route path={`/quotes/${quote.id}/comments`}>
                 <Comments />
             </Route>
         </>
