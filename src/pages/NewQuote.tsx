@@ -1,9 +1,17 @@
 import { FC } from "react";
+import QuoteForm, { Quote } from "../components/quotes/QuoteForm/QuoteForm";
 
 interface INewQuote {}
 
 const NewQuote: FC<INewQuote> = (props) => {
-    return <h1>New Quote Page</h1>;
+    const onAddQuoteHandler = (data: Quote) => {
+        console.log(data);
+    };
+    return (
+        <>
+            <QuoteForm onAddQuote={onAddQuoteHandler} isLoading={false} />
+        </>
+    );
 };
 
 export default NewQuote;

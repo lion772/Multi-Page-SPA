@@ -6,7 +6,6 @@ import AllQuotes from "./pages/AllQuotes";
 import NewQuote from "./pages/NewQuote";
 import QuoteDetail from "./pages/QuoteDetail";
 
-//let quoteList = [{ id: "1", author: "test", text: "test" }];
 
 function App() {
     return (
