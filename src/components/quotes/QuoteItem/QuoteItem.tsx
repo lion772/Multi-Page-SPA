@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Quote } from "../QuoteForm/QuoteForm";
+import { Link } from "react-router-dom";
 import styles from "./QuoteItem.module.css";
 
 interface IQuoteItem {
@@ -8,16 +8,18 @@ interface IQuoteItem {
     text: string;
 }
 
-const QuoteItem: FC<IQuoteItem> = (props) => {
+const QuoteItem: FC<IQuoteItem> = ({ id, author, text }) => {
     return (
         <li className={styles.item}>
             <figure>
                 <blockquote>
-                    <p>{props.text}</p>
+                    <p>{text}</p>
                 </blockquote>
-                <figcaption>{props.author}</figcaption>
+                <figcaption>{author}</figcaption>
             </figure>
-            <a className="btn">View Fullscreen</a>
+            <Link className="btn" to={`/quotes/${id}`}>
+                View Fullscreen
+            </Link>
         </li>
     );
 };
