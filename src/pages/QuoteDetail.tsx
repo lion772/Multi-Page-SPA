@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link, Route, useParams } from "react-router-dom";
+import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
 import Comments from "../components/comments/Comments/Comments";
 import HighlightedQuote from "../components/quotes/HighlightedQuote/HighlightedQuote";
 
@@ -16,6 +16,9 @@ let quoteList = [
 
 const QuoteDetail: FC<IQuoteDetail> = () => {
     const { quoteId } = useParams<QuoteIdParam>();
+    const { path: quotePath, url } = useRouteMatch();
+    console.log(quotePath);
+    console.log(url);
 
     const quote = quoteList.find((quote) => quote.id === quoteId);
 
@@ -26,12 +29,12 @@ const QuoteDetail: FC<IQuoteDetail> = () => {
     return (
         <>
             <HighlightedQuote text={quote.text} author={quote.author} />
-            <Route path={`/quotes/${quote.id}`} exact>
-                <Link className="btn--flat" to={`/quotes/${quote.id}/comments`}>
+            <Route path={quotePath} exact>
+                <Link className="btn--flat" to={`${url}/comments`}>
                     Load comments
                 </Link>
             </Route>
-            <Route path={`/quotes/${quote.id}/comments`}>
+            <Route path={`${quotePath}/comments`}>
                 <Comments />
             </Route>
         </>
@@ -39,3 +42,7 @@ const QuoteDetail: FC<IQuoteDetail> = () => {
 };
 
 export default QuoteDetail;
+
+/* We have to use match.url for Link. Since what we need is to add /comments based on CURRENT URL instead of path. Imagining, furthermore, comments should be stored for each quote.
+
+match.path is used for Route components for the purpose of Dynamic Params. Therefore, all possible params could fit in. */
