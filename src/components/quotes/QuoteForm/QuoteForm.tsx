@@ -21,14 +21,13 @@ const QuoteForm: FC<QuoteFormProps> = (props) => {
 
     function submitFormHandler(event: React.SyntheticEvent) {
         event.preventDefault();
-        //props.isLoading = true;
+        
         const enteredAuthor = authorInputRef.current?.value;
         const enteredText = textInputRef.current?.value;
 
         // optional: Could validate here
 
         props.onAddQuote({ author: enteredAuthor, text: enteredText });
-        //props.isLoading = false;
     }
 
     const finishEnteringHandler = () => {

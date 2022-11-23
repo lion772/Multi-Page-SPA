@@ -1,7 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
 import Comments from "../components/comments/Comments/Comments";
 import HighlightedQuote from "../components/quotes/HighlightedQuote/HighlightedQuote";
+import NoQuotesFound from "../components/quotes/NoQuotesFound/NoQuotesFound";
+import LoadingSpinner from "../components/UI/LoadingSpinner/LoadingSpinner";
+import useHttp from "../hooks/hooks/use-http";
+import { getSingleQuote } from "../lib/lib/api";
 
 interface IQuoteDetail {}
 
@@ -9,26 +13,44 @@ export type QuoteIdParam = {
     quoteId: string | undefined;
 };
 
-let quoteList = [
-    { id: "q1", author: "Will", text: "Learning react is fun" },
-    { id: "q2", author: "Steinke", text: "Learning react is great!" },
-];
-
 const QuoteDetail: FC<IQuoteDetail> = () => {
     const { quoteId } = useParams<QuoteIdParam>();
     const { path: quotePath, url } = useRouteMatch();
-    console.log(quotePath);
-    console.log(url);
 
-    const quote = quoteList.find((quote) => quote.id === quoteId);
+    const {
+        sendRequest: getSingleQuoteById,
+        status,
+        error,
+        data: loadedQuote,
+    } = useHttp(getSingleQuote, true);
 
-    if (!quote) {
-        return <h3>No Quote Found!</h3>;
+    useEffect(() => {
+        getSingleQuoteById(quoteId);
+    }, [getSingleQuoteById, quoteId]);
+
+    if (status === "pending") {
+        return (
+            <div className="centered">
+                <LoadingSpinner />
+            </div>
+        );
+    }
+
+    if (error) {
+        return <p className="centered focused">{error}</p>;
+    }
+
+    if (status === "completed" && (!loadedQuote || !loadedQuote.text)) {
+        return <NoQuotesFound />;
     }
 
     return (
         <>
-            <HighlightedQuote text={quote.text} author={quote.author} />
+            <HighlightedQuote
+                text={loadedQuote.text}
+                author={loadedQuote.author}
+            />
+
             <Route path={quotePath} exact>
                 <Link className="btn--flat" to={`${url}/comments`}>
                     Load comments

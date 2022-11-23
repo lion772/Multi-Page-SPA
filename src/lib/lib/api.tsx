@@ -1,3 +1,5 @@
+import { Quote } from "../../components/quotes/QuoteForm/QuoteForm";
+
 const FIREBASE_DOMAIN =
     "https://react-http-movies-feb4c-default-rtdb.firebaseio.com/";
 
@@ -39,7 +41,7 @@ export async function getSingleQuote(quoteId: string) {
     return loadedQuote;
 }
 
-export async function addQuote(quoteData: any) {
+export async function addQuote(quoteData: Quote) {
     const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`, {
         method: "POST",
         body: JSON.stringify(quoteData),

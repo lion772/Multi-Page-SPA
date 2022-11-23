@@ -63,3 +63,17 @@ p {
     background-color: teal;
     color: white;
 }
+
+.centered {
+    margin: 3rem auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.focused {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+}

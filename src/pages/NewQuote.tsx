@@ -1,20 +1,31 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import QuoteForm, { Quote } from "../components/quotes/QuoteForm/QuoteForm";
+import useHttp from "../hooks/hooks/use-http";
+import { addQuote } from "../lib/lib/api";
 
 interface INewQuote {}
 
 const NewQuote: FC<INewQuote> = (props) => {
     const history = useHistory();
+
+    const { sendRequest: postQuote, status, error } = useHttp(addQuote);
+
+    useEffect(() => {
+        if (!error && status === "completed") {
+            //With push you can allow anyone to go back with the 'back button'
+            history.push("/quotes");
+        }
+    }, [error, history, status]);
+
     const onAddQuoteHandler = (data: Quote) => {
-        console.log(data);
-        //With push you can allow anyone to go back with the 'back button'
-        history.push("/quotes");
+        postQuote(data);
     };
     return (
-        <>
-            <QuoteForm onAddQuote={onAddQuoteHandler} isLoading={false} />
-        </>
+        <QuoteForm
+            onAddQuote={onAddQuoteHandler}
+            isLoading={status === "pending"}
+        />
     );
 };
 
