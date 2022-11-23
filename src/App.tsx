@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Link, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
+import Comments from "./components/comments/Comments/Comments";
 import Layout from "./components/layout/Layout";
 import AllQuotes from "./pages/AllQuotes";
 import NewQuote from "./pages/NewQuote";
@@ -11,26 +12,27 @@ function App() {
     return (
         <Fragment>
             <Layout>
-                <Switch>
-                    <Route path={"/"} exact>
-                        <Redirect to={"/quotes"} />
+                <Routes>
+                    <Route path={"/"} element={<Navigate to={"/quotes"} />} />
+                    <Route path={"/quotes"} element={<AllQuotes />} />
+                    <Route path={"/quotes/:quoteId"} element={<QuoteDetail />}>
+                        <Route
+                            path={""}
+                            element={
+                                <Link className="btn--flat" to={`comments`}>
+                                    Load comments
+                                </Link>
+                            }
+                        />
+                        <Route path={`comments`} element={<Comments />} />
                     </Route>
-                    <Route path={"/quotes"} exact>
-                        <AllQuotes />
-                    </Route>
-                    <Route path={"/quotes/:quoteId"}>
-                        <QuoteDetail />
-                    </Route>
-                    <Route path={"/new-quote"}>
-                        <NewQuote />
-                    </Route>
-                    <Route path={"/not-found"}>
-                        <NotFound />
-                    </Route>
-                    <Route path={"*"}>
-                        <Redirect to={"/not-found"} />
-                    </Route>
-                </Switch>
+                    <Route path={"/new-quote"} element={<NewQuote />} />
+                    <Route path={"/not-found"} element={<NotFound />} />
+                    <Route
+                        path={"*"}
+                        element={<Navigate to={"/not-found"} />}
+                    />
+                </Routes>
             </Layout>
         </Fragment>
     );

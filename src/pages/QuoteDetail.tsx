@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
-import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
-import Comments from "../components/comments/Comments/Comments";
+import { Outlet } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import HighlightedQuote from "../components/quotes/HighlightedQuote/HighlightedQuote";
 import NoQuotesFound from "../components/quotes/NoQuotesFound/NoQuotesFound";
 import LoadingSpinner from "../components/UI/LoadingSpinner/LoadingSpinner";
@@ -15,7 +15,6 @@ export type QuoteIdParam = {
 
 const QuoteDetail: FC<IQuoteDetail> = () => {
     const { quoteId } = useParams<QuoteIdParam>();
-    const { path: quotePath, url } = useRouteMatch();
 
     const {
         sendRequest: getSingleQuoteById,
@@ -50,15 +49,7 @@ const QuoteDetail: FC<IQuoteDetail> = () => {
                 text={loadedQuote.text}
                 author={loadedQuote.author}
             />
-
-            <Route path={quotePath} exact>
-                <Link className="btn--flat" to={`${url}/comments`}>
-                    Load comments
-                </Link>
-            </Route>
-            <Route path={`${quotePath}/comments`}>
-                <Comments />
-            </Route>
+            <Outlet />
         </>
     );
 };

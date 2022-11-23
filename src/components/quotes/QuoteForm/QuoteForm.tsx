@@ -1,5 +1,4 @@
 import React, { FC, useRef, useState } from "react";
-import { Prompt } from "react-router-dom";
 import Card from "../../UI/Card/Card";
 import LoadingSpinner from "../../UI/LoadingSpinner/LoadingSpinner";
 import styles from "./QuoteForm.module.css";
@@ -21,7 +20,7 @@ const QuoteForm: FC<QuoteFormProps> = (props) => {
 
     function submitFormHandler(event: React.SyntheticEvent) {
         event.preventDefault();
-        
+
         const enteredAuthor = authorInputRef.current?.value;
         const enteredText = textInputRef.current?.value;
 
@@ -40,12 +39,12 @@ const QuoteForm: FC<QuoteFormProps> = (props) => {
 
     return (
         <>
-            <Prompt
+            {/* <Prompt
                 when={isEntering}
                 message={(location) =>
                     "Are you sure you want to leave the page? Data will be lost !"
                 }
-            />
+            /> */}
             <Card>
                 <form
                     onFocus={onFocusHandler}

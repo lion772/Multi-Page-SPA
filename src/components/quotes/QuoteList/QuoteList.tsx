@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import QuoteItem from "../QuoteItem/QuoteItem";
 import styles from "./QuoteList.module.css";
 
@@ -20,7 +20,7 @@ interface QuoteListProps {
 }
 
 const QuoteList: FC<QuoteListProps> = ({ quotes }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     let isSortingAscending = queryParams.get("sort") === "asc";
@@ -28,13 +28,10 @@ const QuoteList: FC<QuoteListProps> = ({ quotes }) => {
     const sortedQuotes = sortQuotes(quotes, isSortingAscending);
 
     const changeSortHandler = () => {
-        history.push({
+        navigate({
             pathname: location.pathname,
             search: `?sort=${isSortingAscending ? "desc" : "asc"}`,
         });
-        /* history.push(
-            `${location.pathname}?sort=${isSortingAscending ? "desc" : "asc"}`
-        ); */
     };
 
     return (

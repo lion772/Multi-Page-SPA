@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import QuoteForm, { Quote } from "../components/quotes/QuoteForm/QuoteForm";
 import useHttp from "../hooks/hooks/use-http";
 import { addQuote } from "../lib/lib/api";
@@ -7,16 +7,15 @@ import { addQuote } from "../lib/lib/api";
 interface INewQuote {}
 
 const NewQuote: FC<INewQuote> = (props) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const { sendRequest: postQuote, status, error } = useHttp(addQuote);
 
     useEffect(() => {
         if (!error && status === "completed") {
-            //With push you can allow anyone to go back with the 'back button'
-            history.push("/quotes");
+            navigate("/quotes");
         }
-    }, [error, history, status]);
+    }, [error, navigate, status]);
 
     const onAddQuoteHandler = (data: Quote) => {
         postQuote(data);
