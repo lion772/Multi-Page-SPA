@@ -1,5 +1,4 @@
 import { useReducer, useCallback } from "react";
-import { Quote } from "../../components/quotes/QuoteForm/QuoteForm";
 
 type HttpState = {
     status: string | null;
@@ -52,7 +51,7 @@ function useHttp(
     });
 
     const sendRequest = useCallback(
-        async function (requestData?: Quote | string | null | undefined) {
+        async function (requestData?: any | undefined) {
             dispatch({
                 type: "SEND",
                 responseData: httpState.data,
