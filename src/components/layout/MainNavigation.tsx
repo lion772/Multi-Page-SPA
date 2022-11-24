@@ -12,20 +12,20 @@ const MainNavigation: FC<IMainNavigation> = (props) => {
                 <ul>
                     <li>
                         <NavLink
-                            className={(navData) =>
-                                navData.isActive ? styles.active : ""
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
                             }
-                            to={"/quotes"}
+                            to="/quotes"
                         >
                             All Quotes
                         </NavLink>
                     </li>
                     <li>
                         <NavLink
-                            className={(navData) =>
-                                navData.isActive ? styles.active : ""
+                            className={({ isActive }) =>
+                                isActive ? styles.active : undefined
                             }
-                            to={"/new-quote"}
+                            to="/new-quote"
                         >
                             Add a Quote
                         </NavLink>

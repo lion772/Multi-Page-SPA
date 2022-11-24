@@ -1,4 +1,5 @@
 import { FC, PropsWithChildren } from "react";
+import { Outlet } from "react-router-dom";
 import styles from "./Layout.module.css";
 import MainNavigation from "./MainNavigation";
 
@@ -6,7 +7,9 @@ const Layout: FC<PropsWithChildren> = (props) => {
     return (
         <>
             <MainNavigation />
-            <main className={styles.main}>{props.children}</main>
+            <main className={styles.main}>
+                <Outlet />
+            </main>
         </>
     );
 };
