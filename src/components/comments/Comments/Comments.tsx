@@ -1,9 +1,6 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import useHttp from "../../../hooks/hooks/use-http";
-import { getAllComments } from "../../../lib/lib/api";
-import { QuoteIdParam } from "../../../pages/QuoteDetail";
-import LoadingSpinner from "../../UI/LoadingSpinner/LoadingSpinner";
+import React, { FC, useState } from "react";
+import { redirect, useLoaderData } from "react-router-dom";
+import { addComment, getAllComments } from "../../../lib/lib/api";
 import CommentsList from "../CommentsList/CommentsList";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
 import styles from "./Comments.module.css";
@@ -11,70 +8,54 @@ import styles from "./Comments.module.css";
 interface CommentsProps {}
 
 const Comments: FC<CommentsProps> = () => {
-    const { quoteId } = useParams<QuoteIdParam>();
-    const [isAddingComment, setIsAddingComment] = useState(false);
-
-    const {
-        sendRequest: getComments,
-        error,
-        status,
-        data: loadedComments,
-    } = useHttp(getAllComments);
+    /*     const { quoteId } = useParams<QuoteIdParam>();
+     */ const [isAddingComment, setIsAddingComment] = useState(false);
+    const loadedComments = useLoaderData() as [{ id: string; text: string }];
 
     const startAddCommentHandler = () => {
         setIsAddingComment(true);
     };
 
-    const onAddCommentHandler = useCallback(() => {
-        getComments(quoteId);
-    }, [getComments, quoteId]);
-
-    useEffect(() => {
-        getComments(quoteId);
-    }, [getComments, quoteId]);
-
-    let comments;
-
-    if (status === "pending") {
-        comments = (
-            <div className="centered">
-                <LoadingSpinner />
-            </div>
-        );
-    }
-
-    if (
-        status === "completed" &&
-        !error &&
-        (loadedComments || loadedComments.length > 0)
-    ) {
-        comments = <CommentsList comments={loadedComments} />;
-    }
-
-    if (
-        status === "completed" &&
-        (!loadedComments || loadedComments.length === 0)
-    ) {
-        comments = <div className="centered">No Comments were added yet!</div>;
-    }
-
     return (
-        <section className={styles.comments}>
-            <h2>User Comments</h2>
-            {!isAddingComment && (
-                <button className="btn" onClick={startAddCommentHandler}>
-                    Add a Comment
-                </button>
-            )}
-            {isAddingComment && (
-                <NewCommentForm
-                    quoteId={quoteId as string}
-                    onAddComment={onAddCommentHandler}
-                />
-            )}
-            {comments}
-        </section>
+        <>
+            <div className={styles.comments}>
+                <h2>User Comments</h2>
+                {!isAddingComment && (
+                    <button className="btn" onClick={startAddCommentHandler}>
+                        Add a Comment
+                    </button>
+                )}
+                {isAddingComment && <NewCommentForm />}
+                {loadedComments && <CommentsList comments={loadedComments} />}
+            </div>
+        </>
     );
 };
 
 export default Comments;
+
+export function loader({ params }: { params: any }) {
+    return getAllComments(params.quoteId);
+}
+
+export async function action({
+    request,
+    params,
+}: {
+    request: any;
+    params: any;
+}) {
+    const data = await request.formData();
+    const comment = {
+        commentData: { text: data.get("comment") },
+        quoteId: params.quoteId,
+    };
+
+    const validationError = await addComment(comment);
+
+    if (validationError) {
+        return validationError;
+    }
+
+    return redirect("/quotes/:quoteId");
+}

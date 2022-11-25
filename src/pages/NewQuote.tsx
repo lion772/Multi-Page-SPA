@@ -5,7 +5,7 @@ import { addQuote } from "../lib/lib/api";
 
 interface INewQuote {}
 
-const NewQuote: FC<INewQuote> = (props) => {
+const NewQuote: FC<INewQuote> = () => {
     return <QuoteForm />;
 };
 

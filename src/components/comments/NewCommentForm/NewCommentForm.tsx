@@ -1,48 +1,22 @@
-import React, { FC, useEffect, useRef } from "react";
-import useHttp from "../../../hooks/hooks/use-http";
-import { addComment } from "../../../lib/lib/api";
-import LoadingSpinner from "../../UI/LoadingSpinner/LoadingSpinner";
+import React, { FC } from "react";
+import { Form } from "react-router-dom";
 import styles from "./NewCommentForm.module.css";
 
-interface NewCommentFormProps {
-    quoteId: string;
-    onAddComment: () => void;
-}
+interface NewCommentFormProps {}
 
-const NewCommentForm: FC<NewCommentFormProps> = ({ quoteId, onAddComment }) => {
-    const commentTextRef = useRef<HTMLTextAreaElement>(null);
-    const { sendRequest, error, status } = useHttp(addComment);
-
-    useEffect(() => {
-        if (!error && status === "completed") {
-            onAddComment();
-        }
-    }, [error, onAddComment, status]);
-
-    const submitFormHandler = (event: React.SyntheticEvent) => {
-        event.preventDefault();
-
-        sendRequest({
-            commentData: { text: commentTextRef.current?.value },
-            quoteId,
-        });
-    };
-
+const NewCommentForm: FC<NewCommentFormProps> = () => {
     return (
-        <form className={styles.form} onSubmit={submitFormHandler}>
-            {status === "pending" && (
-                <div className="centered">
-                    <LoadingSpinner />
+        <>
+            <Form className={styles.form} method="post" action={""}>
+                <div className={styles.control}>
+                    <label htmlFor="comment">Your Comment</label>
+                    <textarea id="comment" rows={5} name="comment"></textarea>
                 </div>
-            )}
-            <div className={styles.control} onSubmit={submitFormHandler}>
-                <label htmlFor="comment">Your Comment</label>
-                <textarea id="comment" rows={5} ref={commentTextRef}></textarea>
-            </div>
-            <div className={styles.actions}>
-                <button className="btn">Add Comment</button>
-            </div>
-        </form>
+                <div className={styles.actions}>
+                    <button className="btn">Add Comment</button>
+                </div>
+            </Form>
+        </>
     );
 };
 
