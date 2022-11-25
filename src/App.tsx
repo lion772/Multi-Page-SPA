@@ -14,12 +14,14 @@ import LoadingSpinner from "./components/UI/LoadingSpinner/LoadingSpinner";
 import AllQuotes, { loader as quotesLoader } from "./pages/AllQuotes";
 import QuoteDetail, { loader as quoteLoader } from "./pages/QuoteDetail";
 import NotFound from "./pages/NotFound";
+import { action as postQuoteAction } from "./pages/NewQuote";
 
 const Comments = React.lazy(
     () => import("./components/comments/Comments/Comments")
 );
 /* const QuoteDetail = React.lazy(() => import("./pages/QuoteDetail"));
- */ const NewQuote = React.lazy(() => import("./pages/NewQuote"));
+ */
+const NewQuote = React.lazy(() => import("./pages/NewQuote")); 
 
 const SuspenseLayout = () => (
     <Suspense fallback={<LoadingSpinner className="center-screen" />}>
@@ -55,7 +57,11 @@ const router = createBrowserRouter(
                 />
                 <Route path={`comments`} element={<Comments />} />
             </Route>
-            <Route path={"/new-quote"} element={<NewQuote />} />
+            <Route
+                path={"/new-quote"}
+                element={<NewQuote />}
+                action={postQuoteAction}
+            />
             <Route path={"/not-found"} element={<NotFound />} />
         </Route>
     )

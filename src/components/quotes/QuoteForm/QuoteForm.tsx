@@ -1,6 +1,6 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC } from "react";
+import { Form } from "react-router-dom";
 import Card from "../../UI/Card/Card";
-import LoadingSpinner from "../../UI/LoadingSpinner/LoadingSpinner";
 import styles from "./QuoteForm.module.css";
 
 export type Quote = {
@@ -8,73 +8,25 @@ export type Quote = {
     text: string | undefined;
 };
 
-interface QuoteFormProps {
-    onAddQuote: (data: Quote) => void;
-    isLoading: boolean;
-}
+interface QuoteFormProps {}
 
-const QuoteForm: FC<QuoteFormProps> = (props) => {
-    const authorInputRef = useRef<HTMLInputElement>(null);
-    const textInputRef = useRef<HTMLTextAreaElement>(null);
-    const [isEntering, setIsEntering] = useState(false);
-
-    function submitFormHandler(event: React.SyntheticEvent) {
-        event.preventDefault();
-
-        const enteredAuthor = authorInputRef.current?.value;
-        const enteredText = textInputRef.current?.value;
-
-        // optional: Could validate here
-
-        props.onAddQuote({ author: enteredAuthor, text: enteredText });
-    }
-
-    const finishEnteringHandler = () => {
-        setIsEntering(false);
-    };
-
-    const onFocusHandler = () => {
-        setIsEntering(true);
-    };
-
+const QuoteForm: FC<QuoteFormProps> = () => {
     return (
         <>
-            {/* <Prompt
-                when={isEntering}
-                message={(location) =>
-                    "Are you sure you want to leave the page? Data will be lost !"
-                }
-            /> */}
             <Card>
-                <form
-                    onFocus={onFocusHandler}
-                    className={styles.form}
-                    onSubmit={submitFormHandler}
-                >
-                    {props.isLoading && (
-                        <div className={styles.loading}>
-                            <LoadingSpinner />
-                        </div>
-                    )}
-
+                <Form className={styles.form} method="post" action="/new-quote">
                     <div className={styles.control}>
                         <label htmlFor="author">Author</label>
-                        <input type="text" id="author" ref={authorInputRef} />
+                        <input type="text" id="author" name="author" />
                     </div>
                     <div className={styles.control}>
                         <label htmlFor="text">Text</label>
-                        <textarea
-                            id="text"
-                            rows={5}
-                            ref={textInputRef}
-                        ></textarea>
+                        <textarea id="text" rows={5} name={"text"}></textarea>
                     </div>
                     <div className={styles.actions}>
-                        <button onClick={finishEnteringHandler} className="btn">
-                            Add Quote
-                        </button>
+                        <button className="btn">Add Quote</button>
                     </div>
-                </form>
+                </Form>
             </Card>
         </>
     );
