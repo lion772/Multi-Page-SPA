@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { redirect, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { addComment, getAllComments } from "../../../lib/lib/api";
 import CommentsList from "../CommentsList/CommentsList";
 import NewCommentForm from "../NewCommentForm/NewCommentForm";
@@ -56,6 +56,4 @@ export async function action({
     if (validationError) {
         return validationError;
     }
-
-    return redirect("/quotes/:quoteId");
 }
