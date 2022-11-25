@@ -7,7 +7,7 @@ const Layout: FC<PropsWithChildren> = (props) => {
     return (
         <>
             <MainNavigation />
-            <main className={styles.main}>
+            <main className={styles.layout}>
                 <Outlet />
             </main>
         </>
